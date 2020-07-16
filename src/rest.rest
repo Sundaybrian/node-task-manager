@@ -7,3 +7,17 @@ Content-Type: application/json
     "email":"sunday@gmail.com",
     "password":"marching2013"
 }
+
+###
+GET http://localhost:5000/users/
+
+
+###
+POST http://localhost:5000/tasks
+Content-Type: application/json
+
+{
+   "description":"another one"
+}
+###
+GET http://localhost:5000/tasks/
