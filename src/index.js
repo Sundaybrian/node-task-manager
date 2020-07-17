@@ -40,6 +40,30 @@ app.get("/users/:id", (req, res) => {
     .catch((error) => res.status(500).json(error));
 });
 
+app.patch("/users/:id", async (req, res) => {
+  const updates = Object.keys(req.body);
+  const allowedUpdates = ["name", "email", "age", "password"];
+  const isValidUpdates = updates.every((item) => allowedUpdates.includes(item));
+
+  if (!isValidUpdates) {
+    res.status(400).json({ error: "invalid updates" });
+  }
+
+  try {
+    const user = await User.findByIdAndUpdate(req.body.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!user) {
+      res.status(404).json({ error: "user not found!!" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {}
+});
+
+// tasks
 app.post("/tasks", (req, res) => {
   const task = new Task(req.body);
 
