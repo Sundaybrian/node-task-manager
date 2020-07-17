@@ -29,11 +29,11 @@ app.get("/users", (req, res) => {
 });
 
 app.get("/users/:id", (req, res) => {
-  const _id = req.param.id;
-  User.findById(_id)
+  const id = req.params.id;
+  User.findById(id)
     .then((result) => {
       if (!result) {
-        return res.status(400).json({ message: "users not found" });
+        return res.status(404).json({ message: "users not found" });
       }
       res.status(201).json(result);
     })
@@ -50,7 +50,7 @@ app.patch("/users/:id", async (req, res) => {
   }
 
   try {
-    const user = await User.findByIdAndUpdate(req.body.id, req.body, {
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
@@ -60,7 +60,9 @@ app.patch("/users/:id", async (req, res) => {
     }
 
     res.status(200).json(user);
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).json(error);
+  }
 });
 
 // tasks
