@@ -89,7 +89,7 @@ app.get("/tasks", (req, res) => {
 });
 
 app.get("/tasks/:id", (req, res) => {
-  const _id = req.param.id;
+  const _id = req.params.id;
   Task.findById(_id)
     .then((result) => {
       if (!result) {
@@ -98,6 +98,31 @@ app.get("/tasks/:id", (req, res) => {
       res.status(200).json(result);
     })
     .catch((error) => res.status(500).json(error));
+});
+
+app.patch("/tasks/:id", async (req, res) => {
+  const updates = Object.keys(req.body);
+  const allowedUpdates = ["description", "completed"];
+  const isValidUpdates = updates.every((item) => allowedUpdates.includes(item));
+
+  if (!isValidUpdates) {
+    return res.status(400).json({ error: "invalid updates" });
+  }
+
+  try {
+    const task = await Task.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!task) {
+      return res.status(404).json({ error: "task not found" });
+    }
+
+    res.status(200).json(task);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
 });
 
 app.listen(5000, () => {
