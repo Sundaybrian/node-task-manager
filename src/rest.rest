@@ -49,3 +49,6 @@ Content-Type: application/json
     "email":"mimi@gmail.com"
 
 }
+
+###
+DELETE http://localhost:5000/tasks/5f106871ee37f75e5455f3a8

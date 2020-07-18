@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Task = require("../models/task");
 const router = require("express").Router();
 
 router.post("/users", (req, res) => {
@@ -57,6 +58,20 @@ router.patch("/users/:id", async (req, res) => {
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json(error);
+  }
+});
+
+router.delete("/tasks/:id", async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const task = await Task.findByIdAndDelete(id);
+    if (!task) {
+      return res.status(404).json({ error: "not such task exist" });
+    }
+    res.status(200).json({ task, removed: true });
+  } catch (error) {
+    res.status(500).json({ task, removed: true });
   }
 });
 
