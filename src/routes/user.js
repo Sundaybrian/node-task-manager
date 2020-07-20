@@ -2,15 +2,15 @@ const User = require("../models/user");
 const Task = require("../models/task");
 const router = require("express").Router();
 
-router.post("/users", (req, res) => {
+router.post("/users", async (req, res) => {
   const user = new User(req.body);
 
-  user
-    .save()
-    .then((result) => {
-      res.status(201).json(result);
-    })
-    .catch((error) => res.status(400).json(error));
+  try {
+    const result = await user.save();
+    res.status(201).json(result);
+  } catch (error) {
+    res.status(400).json(error);
+  }
 });
 
 router.get("/users", (req, res) => {
@@ -46,10 +46,17 @@ router.patch("/users/:id", async (req, res) => {
   }
 
   try {
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
+    // const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+    //   new: true,
+    //   runValidators: true,
+    // });
+
+    const user = await User.findById(req.params.id);
+    updates.forEach((update) => {
+      user[update] = req.body[update];
     });
+
+    await user.save();
 
     if (!user) {
       res.status(404).json({ error: "user not found!!" });
