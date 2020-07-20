@@ -31,10 +31,15 @@ Content-Type: application/json
 
 {
     "email":"mimi@gmail.com",
-    "password":"march014"
+    "password":"march2014"
 
 }
 
+
+### find my profile
+GET http://localhost:5000/users/me
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE1YTNkN2EzNjlhODQ2NjEzMDI0ODAiLCJpYXQiOjE1OTUyNTk5MTYsImV4cCI6MTU5NTQzMjcxNn0.PPnY8cm1WyOFtDF7-9MRAlUf0wioskun6n0VCuAWH4g
 
 
 ### create a task

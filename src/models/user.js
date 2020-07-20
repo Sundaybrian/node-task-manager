@@ -61,6 +61,11 @@ userSchema.methods.generateAuthToken = async function () {
   const token = await jwt.sign({ _id: user._id.toString() }, "mytopsecret", {
     expiresIn: "2 days",
   });
+
+  // add token to user tokens array
+  user.tokens = user.tokens.concat({ token });
+
+  await user.save();
   return token;
 };
 

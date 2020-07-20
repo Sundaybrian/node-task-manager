@@ -1,13 +1,16 @@
 const User = require("../models/user");
 const Task = require("../models/task");
+const auth = require("../middleware/auth");
 const router = require("express").Router();
 
 router.post("/users", async (req, res) => {
   const user = new User(req.body);
 
   try {
-    const result = await user.save();
-    res.status(201).json(result);
+    await user.save();
+    const token = await user.generateAuthToken();
+
+    res.status(201).json({ user, token });
   } catch (error) {
     res.status(400).json(error);
   }
@@ -28,15 +31,8 @@ router.post("/users/login", async (req, res) => {
   }
 });
 
-router.get("/users", (req, res) => {
-  User.find({})
-    .then((result) => {
-      if (!result) {
-        return res.status(400).json({ message: "users not found" });
-      }
-      res.status(201).json(result);
-    })
-    .catch((error) => res.status(500).json(error));
+router.get("/users/me", auth, async (req, res) => {
+  res.status(200).json(req.user);
 });
 
 router.get("/users/:id", (req, res) => {
