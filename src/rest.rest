@@ -26,14 +26,14 @@ Content-Type: application/json
 }
 
 
-###
+### create a task
 POST http://localhost:5000/tasks
 Content-Type: application/json
 
 {
    "description":"another one"
 }
-###
+### get all task
 GET http://localhost:5000/tasks/
 
 
@@ -42,12 +42,12 @@ GET http://localhost:5000/tasks/5f106871ee37f75e5455f3a8
 
 
 ### update task
-PATCH http://localhost:5000/tasks/5f106871ee37f75e5455f3a8
+PATCH http://localhost:5000/tasks/5f11e5268571fe1958791237
 Content-Type: application/json
 
 {
-    "name":"new brian",
-    "email":"mimi@gmail.com"
+    "description":"new brian",
+    "completed":false
 
 }
 

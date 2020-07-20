@@ -28,6 +28,23 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+// adding a custom method
+userSchema.statics.findByCredentials = async (email, password) => {
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new Error("unable to login in");
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+
+  if (!isMatch) {
+    throw new Error("unable to log in");
+  }
+
+  return user;
+};
+
 // run middleware before saving user,wether on creation or updating
 userSchema.pre("save", async function (next) {
   const user = this;
