@@ -3,9 +3,9 @@ POST http://localhost:5000/users
 Content-Type: application/json
 
 {
-    "name":"sunday vee",
-    "email":"sunday@gmail.com",
-    "password":"marching2013"
+    "name":"mimi gee",
+    "email":"mimi@gmail.com",
+    "password":"march2014"
 }
 
 ### get all users
@@ -24,6 +24,17 @@ Content-Type: application/json
     "password":"march2014"
 
 }
+
+### login user
+POST http://localhost:5000/users/login
+Content-Type: application/json
+
+{
+    "email":"mimi@gmail.com",
+    "password":"march014"
+
+}
+
 
 
 ### create a task

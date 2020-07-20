@@ -13,6 +13,19 @@ router.post("/users", async (req, res) => {
   }
 });
 
+router.post("/users/login", async (req, res) => {
+  try {
+    const user = await User.findByCredentials(
+      req.body.email,
+      req.body.password
+    );
+
+    res.status(200).json(user);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+});
+
 router.get("/users", (req, res) => {
   User.find({})
     .then((result) => {
