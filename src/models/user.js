@@ -27,6 +27,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  tokens: [
+    {
+      token: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
 });
 
 // adding a custom method to the model
@@ -50,7 +58,9 @@ userSchema.statics.findByCredentials = async (email, password) => {
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
 
-  const token = await jwt.sign({ _id: user._id.toString() }, "mytopsecret");
+  const token = await jwt.sign({ _id: user._id.toString() }, "mytopsecret", {
+    expiresIn: "2 days",
+  });
   return token;
 };
 
