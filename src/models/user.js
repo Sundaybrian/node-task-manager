@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -28,7 +29,7 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// adding a custom method
+// adding a custom method to the model
 userSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email });
 
@@ -43,6 +44,14 @@ userSchema.statics.findByCredentials = async (email, password) => {
   }
 
   return user;
+};
+
+// generate tokens - user instance
+userSchema.methods.generateAuthToken = async function () {
+  const user = this;
+
+  const token = await jwt.sign({ _id: user._id.toString() }, "mytopsecret");
+  return token;
 };
 
 // run middleware before saving user,wether on creation or updating
