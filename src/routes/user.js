@@ -31,8 +31,36 @@ router.post("/users/login", async (req, res) => {
   }
 });
 
+router.post("/users/logout", auth, async (req, res) => {
+  try {
+    req.user.tokens = req.user.tokens.filter((token) => token.token !== token);
+
+    await req.user.save();
+
+    res.status(200).json({ message: "logged out" });
+  } catch (error) {
+    res.status(500).json({ error: "something went wrong" });
+  }
+});
+
+router.post("/users/logoutAll", auth, async (req, res) => {
+  try {
+    req.user.tokens = [];
+    await req.user.save();
+
+    res.status(200).json({ message: "logged out of all devices" });
+  } catch (error) {
+    res.status(500).json({ error: "something went wrong", error });
+  }
+});
+
 router.get("/users/me", auth, async (req, res) => {
-  res.status(200).json(req.user);
+  try {
+    res.status(200).json(req.user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "something went wrong" });
+  }
 });
 
 router.get("/users/:id", (req, res) => {

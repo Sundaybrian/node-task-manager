@@ -54,12 +54,24 @@ userSchema.statics.findByCredentials = async (email, password) => {
   return user;
 };
 
+// method to return nonsensive user data
+
+userSchema.methods.toJSON = function () {
+  const user = this;
+  const userObj = user.toObject();
+
+  delete userObj.password;
+  delete userObj.tokens;
+
+  return userObj;
+};
+
 // generate tokens - user instance
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
 
   const token = await jwt.sign({ _id: user._id.toString() }, "mytopsecret", {
-    expiresIn: "2 days",
+    expiresIn: 3600,
   });
 
   // add token to user tokens array
