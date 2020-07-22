@@ -53,7 +53,7 @@ router.get("/tasks/:id", auth, async (req, res) => {
 });
 
 // update a task
-router.patch("/tasks/:id", async (req, res) => {
+router.patch("/tasks/:id", auth, async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ["description", "completed"];
   const isValidUpdates = updates.every((item) => allowedUpdates.includes(item));
@@ -63,15 +63,15 @@ router.patch("/tasks/:id", async (req, res) => {
   }
 
   try {
-    const task = await Task.findById(req.params.id);
+    const task = await Task.findBy({ _id: req.params.id, owner: req.user._id });
+
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
 
     updates.forEach((update) => (task[update] = req.body[update]));
 
     await task.save();
-
-    if (!task) {
-      return res.status(404).json({ error: "task not found" });
-    }
 
     res.status(200).json(task);
   } catch (error) {
@@ -79,17 +79,17 @@ router.patch("/tasks/:id", async (req, res) => {
   }
 });
 
-router.delete("/tasks/:id", async (req, res) => {
+router.delete("/tasks/:id", auth, async (req, res) => {
   const id = req.params.id;
 
   try {
-    const task = await Task.findByIdAndDelete(id);
+    const task = await Task.findOneAndDelete({ _id: id, owner: req.user._id });
     if (!task) {
       return res.status(404).json({ error: "not such task exist" });
     }
-    res.status(200).json({ task, removed: true });
+    res.status(200).json({ task, message: "removed" });
   } catch (error) {
-    res.status(500).json({ task, removed: true });
+    res.status(500).json({ error: "something went wrong" });
   }
 });
 

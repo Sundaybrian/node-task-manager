@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Task = require("./task");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -88,7 +89,7 @@ userSchema.methods.generateAuthToken = async function () {
   return token;
 };
 
-// run middleware before saving user,wether on creation or updating
+// run middleware before saving user,wether on creation or updating to hash password
 userSchema.pre("save", async function (next) {
   const user = this;
 
@@ -96,6 +97,15 @@ userSchema.pre("save", async function (next) {
   if (user.isModified("password")) {
     user.password = await bcrypt.hash(user.password, 8);
   }
+
+  next();
+});
+
+// cascading user tasks when a user is deleted
+userSchema.pre("remove", async function (next) {
+  const user = this;
+
+  await Task.deleteMany({ owner: user._id });
 
   next();
 });
