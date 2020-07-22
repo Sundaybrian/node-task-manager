@@ -17,15 +17,23 @@ router.post("/tasks", auth, async (req, res) => {
   }
 });
 
-router.get("/tasks", (req, res) => {
-  Task.find({})
-    .then((result) => {
-      if (!result) {
-        return res.status(400).json({ message: "tasks not found" });
-      }
-      res.status(200).json(result);
-    })
-    .catch((error) => res.status(500).json(error));
+// fetch all your tasks
+router.get("/tasks", auth, async (req, res) => {
+  try {
+    // const tasks = await req.user.populate("tasks").execPopulate();
+
+    const tasks = await Task.find({ owner: req.user._id });
+
+    if (!tasks) {
+      return res.status(400).json({ message: "tasks not found" });
+    }
+
+    res.status(200).json(tasks);
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json(error);
+  }
 });
 
 // fetch your task
@@ -44,6 +52,7 @@ router.get("/tasks/:id", auth, async (req, res) => {
   }
 });
 
+// update a task
 router.patch("/tasks/:id", async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ["description", "completed"];
@@ -54,11 +63,6 @@ router.patch("/tasks/:id", async (req, res) => {
   }
 
   try {
-    // const task = await Task.findByIdAndUpdate(req.params.id, req.body, {
-    //   new: true,
-    //   runValidators: true,
-    // });
-
     const task = await Task.findById(req.params.id);
 
     updates.forEach((update) => (task[update] = req.body[update]));
