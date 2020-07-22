@@ -75,7 +75,8 @@ router.get("/users/:id", (req, res) => {
     .catch((error) => res.status(500).json(error));
 });
 
-router.patch("/users/:id", async (req, res) => {
+// update user profile
+router.patch("/users/me", auth, async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ["name", "email", "age", "password"];
   const isValidUpdates = updates.every((item) => allowedUpdates.includes(item));
@@ -85,21 +86,12 @@ router.patch("/users/:id", async (req, res) => {
   }
 
   try {
-    // const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-    //   new: true,
-    //   runValidators: true,
-    // });
-
-    const user = await User.findById(req.params.id);
+    const user = req.user;
     updates.forEach((update) => {
       user[update] = req.body[update];
     });
 
     await user.save();
-
-    if (!user) {
-      res.status(404).json({ error: "user not found!!" });
-    }
 
     res.status(200).json(user);
   } catch (error) {
@@ -107,6 +99,7 @@ router.patch("/users/:id", async (req, res) => {
   }
 });
 
+// remove a user profile
 router.delete("/users/me", auth, async (req, res) => {
   try {
     await req.user.remove();

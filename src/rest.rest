@@ -15,13 +15,15 @@ GET http://localhost:5000/users/
 GET http://localhost:5000/users/5f1048c31a10bd518fbe6caa
 
 ### update user details
-PATCH http://localhost:5000/users/5f1048c31a10bd518fbe6caa
+PATCH http://localhost:5000/users/me
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE4M2JiOWUxNjRlZjJjNmM4N2MxNDIiLCJpYXQiOjE1OTU0MjM2NzMsImV4cCI6MTU5NTQyNzI3M30.CsZKdTC28K-umWIQJuksmTpl7LSYXlVpyHbrxzZHB9A
 
 {
-    "name":"new brian",
+    "name":"brian sunday",
     "email":"mimi@gmail.com",
-    "password":"march2014"
+    "password":"march2014",
+    "age":27
 
 }
 
