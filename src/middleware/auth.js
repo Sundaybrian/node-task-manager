@@ -5,6 +5,12 @@ const auth = async (req, res, next) => {
   try {
     const token = req.header("Authorization").replace("Bearer ", "");
 
+    if (!token) {
+      return res
+        .status(401)
+        .json({ error: "token not found,unauthorized access" });
+    }
+
     const decode = jwt.verify(token, "mytopsecret");
     const user = await User.findOne({ _id: decode._id, "tokens.token": token });
 

@@ -68,4 +68,18 @@ router.patch("/tasks/:id", async (req, res) => {
   }
 });
 
+router.delete("/tasks/:id", async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const task = await Task.findByIdAndDelete(id);
+    if (!task) {
+      return res.status(404).json({ error: "not such task exist" });
+    }
+    res.status(200).json({ task, removed: true });
+  } catch (error) {
+    res.status(500).json({ task, removed: true });
+  }
+});
+
 module.exports = router;

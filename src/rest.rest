@@ -38,7 +38,7 @@ Content-Type: application/json
 ### find my profile
 GET http://localhost:5000/users/me
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE1YTNkN2EzNjlhODQ2NjEzMDI0ODAiLCJpYXQiOjE1OTU0MjE2OTEsImV4cCI6MTU5NTQyNTI5MX0.V4nIj08YPkndcXyF5930g_kEKeL2Vf6f2U_lNGfpRv0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE1YTNkN2EzNjlhODQ2NjEzMDI0ODAiLCJpYXQiOjE1OTU0MjMxMjgsImV4cCI6MTU5NTQyNjcyOH0.n_cnnOR7z1g-_SAUYZhJB5aKkrb-kadmeOOLyC9aXV
 
 ### logout
 POST http://localhost:5000/users/logout
@@ -50,6 +50,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE1YTNkN
 POST http://localhost:5000/users/logoutAll
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE1YTNkN2EzNjlhODQ2NjEzMDI0ODAiLCJpYXQiOjE1OTU0MjE2OTEsImV4cCI6MTU5NTQyNTI5MX0.V4nIj08YPkndcXyF5930g_kEKeL2Vf6f2U_lNGfpRv0
 
+
+### remove my profile
+DELETE http://localhost:5000/users/me
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE1YTNkN2EzNjlhODQ2NjEzMDI0ODAiLCJpYXQiOjE1OTU0MjMxMjgsImV4cCI6MTU5NTQyNjcyOH0.n_cnnOR7z1g-_SAUYZhJB5aKkrb-kadmeOOLyC9aXV8
 
 
 ### create a task
