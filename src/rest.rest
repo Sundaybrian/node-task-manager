@@ -1,4 +1,4 @@
-
+## create user
 POST http://localhost:5000/users
 Content-Type: application/json
 
@@ -8,11 +8,11 @@ Content-Type: application/json
     "password":"march2014"
 }
 
-### get all users
-GET http://localhost:5000/users/
+# ### get all users
+# GET http://localhost:5000/users/
 
 ### Get user by id
-GET http://localhost:5000/users/5f1048c31a10bd518fbe6caa
+# GET http://localhost:5000/users/5f1048c31a10bd518fbe6caa
 
 ### update user details
 PATCH http://localhost:5000/users/me
@@ -59,13 +59,20 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE1YTNkN2EzNjlhODQ2NjEzMDI0ODAiLCJpYXQiOjE1OTU0MjMxMjgsImV4cCI6MTU5NTQyNjcyOH0.n_cnnOR7z1g-_SAUYZhJB5aKkrb-kadmeOOLyC9aXV8
 
 
+
+
+
+
 ### create a task
 POST http://localhost:5000/tasks
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE4M2JiOWUxNjRlZjJjNmM4N2MxNDIiLCJpYXQiOjE1OTU0MjU0MTksImV4cCI6MTU5NTQyOTAxOX0.EB6Z-7MKy2Op4yO4lxJy-fL2P1y_anQSPQGzul8W7mQ
 
 {
    "description":"another one"
 }
+
+
 ### get all task
 GET http://localhost:5000/tasks/
 
