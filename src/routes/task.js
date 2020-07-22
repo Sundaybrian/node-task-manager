@@ -28,16 +28,20 @@ router.get("/tasks", (req, res) => {
     .catch((error) => res.status(500).json(error));
 });
 
-router.get("/tasks/:id", (req, res) => {
+// fetch your task
+router.get("/tasks/:id", auth, async (req, res) => {
   const _id = req.params.id;
-  Task.findById(_id)
-    .then((result) => {
-      if (!result) {
-        return res.status(400).json({ message: "task not found" });
-      }
-      res.status(200).json(result);
-    })
-    .catch((error) => res.status(500).json(error));
+
+  try {
+    const task = await Task.findOne({ _id, owner: req.user_id });
+
+    if (!task) {
+      return res.status(404).json({ message: "task not found" });
+    }
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json(error);
+  }
 });
 
 router.patch("/tasks/:id", async (req, res) => {

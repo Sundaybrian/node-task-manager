@@ -54,8 +54,15 @@ userSchema.statics.findByCredentials = async (email, password) => {
   return user;
 };
 
-// method to return nonsensive user data
+// create virtual field for tasks :thus u can do something
+// like user.tasks
+userSchema.virtual("tasks", {
+  ref: "Task", //collections
+  localField: "_id", //pk
+  foreignField: "owner", //fk
+});
 
+// method to return nonsensive user data
 userSchema.methods.toJSON = function () {
   const user = this;
   const userObj = user.toObject();
