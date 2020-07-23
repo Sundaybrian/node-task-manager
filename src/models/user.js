@@ -4,39 +4,44 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Task = require("./task");
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    trim: true,
-    unique: true,
-    validate(value) {
-      if (!validator.isEmail(value)) {
-        throw new Error("email is invalid");
-      }
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
     },
-  },
-  age: {
-    type: Number,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  tokens: [
-    {
-      token: {
-        type: String,
-        required: true,
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+      unique: true,
+      validate(value) {
+        if (!validator.isEmail(value)) {
+          throw new Error("email is invalid");
+        }
       },
     },
-  ],
-});
+    age: {
+      type: Number,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    tokens: [
+      {
+        token: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+);
 
 // adding a custom method to the model
 userSchema.statics.findByCredentials = async (email, password) => {
