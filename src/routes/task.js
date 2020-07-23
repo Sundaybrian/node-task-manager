@@ -19,16 +19,25 @@ router.post("/tasks", auth, async (req, res) => {
 
 // fetch all your tasks
 router.get("/tasks", auth, async (req, res) => {
+  const match = {};
+
+  if (req.query.completed) {
+    match.completed = req.query.completed == "true";
+  }
+
   try {
-    // const tasks = await req.user.populate("tasks").execPopulate();
+    await req.user
+      .populate({
+        path: "tasks",
+        match,
+      })
+      .execPopulate();
 
-    const tasks = await Task.find({ owner: req.user._id });
-
-    if (!tasks) {
+    if (!req.user.tasks) {
       return res.status(400).json({ message: "tasks not found" });
     }
 
-    res.status(200).json(tasks);
+    res.status(200).json(req.user.tasks);
   } catch (error) {
     console.log(error);
 
