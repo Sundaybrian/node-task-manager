@@ -109,4 +109,34 @@ router.delete("/users/me", auth, async (req, res) => {
   }
 });
 
+// upload avatars
+
+const multer = require("multer");
+
+const upload = multer({
+  dest: "images/",
+  limits: {
+    fileSize: 1000000,
+  },
+  fileFilter(req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+      return cb(new Error("Please upload an image"));
+    }
+
+    cb(undefined, true);
+  },
+});
+router.post(
+  "/users/me/avatar",
+  upload.single("avatar"),
+  (req, res) => {
+    console.log(res.file);
+
+    res.send();
+  },
+  (error, req, res, next) => {
+    res.status(400).json({ error: error.message });
+  }
+);
+
 module.exports = router;

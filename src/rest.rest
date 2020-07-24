@@ -59,8 +59,8 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE1YTNkN2EzNjlhODQ2NjEzMDI0ODAiLCJpYXQiOjE1OTU0MjMxMjgsImV4cCI6MTU5NTQyNjcyOH0.n_cnnOR7z1g-_SAUYZhJB5aKkrb-kadmeOOLyC9aXV8
 
 
-
-
+## upload avatar
+GET http://localhost:5000/users/me/avatar
 
 
 ### create a task
