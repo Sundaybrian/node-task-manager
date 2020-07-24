@@ -114,7 +114,6 @@ router.delete("/users/me", auth, async (req, res) => {
 const multer = require("multer");
 
 const upload = multer({
-  dest: "images/",
   limits: {
     fileSize: 1000000,
   },
@@ -128,11 +127,13 @@ const upload = multer({
 });
 router.post(
   "/users/me/avatar",
+  auth,
   upload.single("avatar"),
-  (req, res) => {
-    console.log(res.file);
+  async (req, res) => {
+    req.user.avatar = req.file.buffer;
 
-    res.send();
+    await req.user.save();
+    res.status(200).json({ message: "image saved " });
   },
   (error, req, res, next) => {
     res.status(400).json({ error: error.message });
