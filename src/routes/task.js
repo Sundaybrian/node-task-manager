@@ -20,11 +20,18 @@ router.post("/tasks", auth, async (req, res) => {
 // fetch all your tasks
 // GET /tasks?completed=true
 // GET /tasks?limit=3&skip=3
+// GET /tasks?sortBy=createdAt:desc
 router.get("/tasks", auth, async (req, res) => {
   const match = {};
+  const sort = {};
 
   if (req.query.completed) {
     match.completed = req.query.completed == "true";
+  }
+
+  if (req.query.sortBy) {
+    const parts = req.query.sortBy.split(":");
+    sort[parts[0]] = parts[1] == "desc" ? -1 : 1;
   }
 
   try {
@@ -35,6 +42,7 @@ router.get("/tasks", auth, async (req, res) => {
         options: {
           limit: parseInt(req.query.limit) || 10,
           skip: parseInt(req.query.skip) || 10,
+          sort,
         },
       })
       .execPopulate();
