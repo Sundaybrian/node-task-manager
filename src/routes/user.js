@@ -110,7 +110,6 @@ router.delete("/users/me", auth, async (req, res) => {
 });
 
 // upload avatars
-
 const multer = require("multer");
 
 const upload = multer({
@@ -139,5 +138,14 @@ router.post(
     res.status(400).json({ error: error.message });
   }
 );
+
+// delete avatar
+router.delete("/users/me/avatar", auth, async (req, res) => {
+  // TODO SAVE some dummy img later
+  req.user.avatar = undefined;
+
+  await req.user.save();
+  res.status(200).json({ message: "image removed" });
+});
 
 module.exports = router;
