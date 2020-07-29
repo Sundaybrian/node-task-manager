@@ -2,6 +2,7 @@ const User = require("../models/user");
 const Task = require("../models/task");
 const auth = require("../middleware/auth");
 const router = require("express").Router();
+const sharp = require("sharp");
 
 router.post("/users", async (req, res) => {
   const user = new User(req.body);
@@ -43,6 +44,7 @@ router.post("/users/logout", auth, async (req, res) => {
   }
 });
 
+// logout out of all devices
 router.post("/users/logoutAll", auth, async (req, res) => {
   try {
     req.user.tokens = [];
@@ -54,6 +56,7 @@ router.post("/users/logoutAll", auth, async (req, res) => {
   }
 });
 
+// fetch profile
 router.get("/users/me", auth, async (req, res) => {
   try {
     res.status(200).json(req.user);
@@ -129,7 +132,12 @@ router.post(
   auth,
   upload.single("avatar"),
   async (req, res) => {
-    req.user.avatar = req.file.buffer;
+    const buffer = await sharp(req.file.buffer)
+      .resize({ width: 250, height: 250 })
+      .png()
+      .toBuffer();
+
+    req.user.avatar = buffer;
 
     await req.user.save();
     res.status(200).json({ message: "image saved " });
@@ -148,4 +156,19 @@ router.delete("/users/me/avatar", auth, async (req, res) => {
   res.status(200).json({ message: "image removed" });
 });
 
+// get avatar url
+router.get("/users/:id/avatar", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user || !user.avatar) {
+      throw new Error();
+    }
+
+    res.set("Content-Type", "image/png");
+    res.status(200).json({ avatar: user.avatar });
+  } catch (error) {
+    res.status(404).json({ error: "image not found" });
+  }
+});
 module.exports = router;
