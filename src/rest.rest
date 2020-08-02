@@ -40,7 +40,8 @@ Content-Type: application/json
 ### find my profile
 GET http://localhost:5000/users/me
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE1YTNkN2EzNjlhODQ2NjEzMDI0ODAiLCJpYXQiOjE1OTU0MjMxMjgsImV4cCI6MTU5NTQyNjcyOH0.n_cnnOR7z1g-_SAUYZhJB5aKkrb-kadmeOOLyC9aXV
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE4M2JiOWUxNjRlZjJjNmM4N2MxNDIiLCJpYXQiOjE1OTYzNzM3NTgsImV4cCI6MTU5NjM3NzM1OH0.ej-AhleHIVVnxM55vAtsMOoU3lH3bzGHWUtoA2QHiac
+
 
 ### logout
 POST http://localhost:5000/users/logout
